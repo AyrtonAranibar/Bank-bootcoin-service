@@ -1,6 +1,19 @@
+server:
+  port: 8087
+
 spring:
   application:
     name: bootcoin-service
+
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/bootcoin-database
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
   config:
     import: optional:configserver:http://localhost:8888

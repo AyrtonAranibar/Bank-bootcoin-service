@@ -16,7 +16,7 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
 
     private final ExchangeRateRepository repository;
 
-    private static final String RATE_ID = "BOOTCOIN_RATE"; // for singleton pattern
+    private static final String RATE_ID = "BOOTCOIN_RATE";
 
     @Override
     public Mono<ExchangeRateDto> updateRate(ExchangeRateDto dto) {
