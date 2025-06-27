@@ -1,5 +1,6 @@
 package com.bank.ayrton.bootcoin_service.dto;
 
+import com.bank.ayrton.bootcoin_service.entity.TradeType;
 import com.bank.ayrton.bootcoin_service.entity.TransferMethod;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,5 +12,6 @@ import lombok.NoArgsConstructor;
 public class TradeRequestDto {
     private String requesterWalletId;
     private Double amount;
-    private TransferMethod transferMethod;
+    private TransferMethod transferMethod; // YANKI o ACCOUNT
+    private TradeType tradeType;           // BUY o SELL
 }

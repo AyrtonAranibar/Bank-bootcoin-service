@@ -30,6 +30,6 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
     }
 
     private ExchangeRateDto toDto(ExchangeRate entity) {
-        return new ExchangeRateDto(entity.getBuyRate(), entity.getSellRate());
+        return new ExchangeRateDto(entity.getBuyRate(), entity.getSellRate(), entity.getUpdatedAt());
     }
 }

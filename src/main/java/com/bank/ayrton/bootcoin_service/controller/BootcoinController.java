@@ -7,10 +7,12 @@ import com.bank.ayrton.bootcoin_service.dto.BootcoinWalletDto;
 import com.bank.ayrton.bootcoin_service.dto.ExchangeRateDto;
 import com.bank.ayrton.bootcoin_service.dto.TradeRequestDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/bootcoin")
 @RequiredArgsConstructor
@@ -48,10 +50,22 @@ public class BootcoinController {
     }
 
     @PostMapping("/trades/accept/{tradeId}")
-    public Mono<ResponseEntity<Void>> acceptTrade(@PathVariable String tradeId,
-                                                  @RequestParam String sellerWalletId) {
+    public Mono<ResponseEntity<Object>> acceptTrade(@PathVariable String tradeId,
+                                                    @RequestParam String sellerWalletId) {
+        log.info("Petición de aceptación recibida: tradeId={}, sellerWalletId={}", tradeId, sellerWalletId);
+
         return tradeService.acceptTrade(tradeId, sellerWalletId)
-                .thenReturn(ResponseEntity.ok().build())
-                .onErrorResume(error -> Mono.just(ResponseEntity.badRequest().build()));
+                .then(Mono.just(ResponseEntity.<Void>ok().build()))
+                .onErrorResume(error -> {
+                    log.error(" Error al aceptar trade: {}", error.getMessage());
+                    return Mono.just(ResponseEntity.badRequest().build());
+                });
+    }
+
+    @GetMapping("/wallets/{id}")
+    public Mono<ResponseEntity<BootcoinWalletDto>> getWalletById(@PathVariable String id) {
+        return walletService.findById(id)
+                .map(ResponseEntity::ok)
+                .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 }

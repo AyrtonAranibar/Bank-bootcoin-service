@@ -5,4 +5,5 @@ import reactor.core.publisher.Mono;
 
 public interface BootcoinWalletService {
     Mono<BootcoinWalletDto> createWallet(BootcoinWalletDto dto);
+    Mono<BootcoinWalletDto> findById(String id);
 }

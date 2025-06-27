@@ -18,4 +18,7 @@ public class BootcoinWallet {
     private String documentNumber;
     private String phoneNumber;
     private String email;
+
+    private String associatedYankiWalletId;
+    private String associatedAccountId;
 }

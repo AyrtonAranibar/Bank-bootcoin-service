@@ -5,7 +5,10 @@ import com.bank.ayrton.bootcoin_service.api.bootcoin.BootcoinWalletService;
 import com.bank.ayrton.bootcoin_service.dto.BootcoinWalletDto;
 import com.bank.ayrton.bootcoin_service.entity.BootcoinWallet;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import reactor.core.publisher.Mono;
 
 @Service
@@ -13,6 +16,7 @@ import reactor.core.publisher.Mono;
 public class BootcoinWalletServiceImpl implements BootcoinWalletService {
 
     private final BootcoinWalletRepository repository;
+
 
     @Override
     public Mono<BootcoinWalletDto> createWallet(BootcoinWalletDto dto) {
@@ -24,11 +28,31 @@ public class BootcoinWalletServiceImpl implements BootcoinWalletService {
                 }));
     }
 
+    @Override
+    public Mono<BootcoinWalletDto> findById(String id) {
+        return repository.findById(id).map(this::toDto);
+    }
+
     private BootcoinWallet toEntity(BootcoinWalletDto dto) {
-        return new BootcoinWallet(null, dto.getDocumentType(), dto.getDocumentNumber(), dto.getPhoneNumber(), dto.getEmail());
+        BootcoinWallet wallet = new BootcoinWallet();
+        wallet.setDocumentType(dto.getDocumentType());
+        wallet.setDocumentNumber(dto.getDocumentNumber());
+        wallet.setPhoneNumber(dto.getPhoneNumber());
+        wallet.setEmail(dto.getEmail());
+        wallet.setAssociatedYankiWalletId(dto.getAssociatedYankiWalletId());
+        wallet.setAssociatedAccountId(dto.getAssociatedAccountId());
+        return wallet;
     }
 
     private BootcoinWalletDto toDto(BootcoinWallet entity) {
-        return new BootcoinWalletDto(entity.getDocumentType(), entity.getDocumentNumber(), entity.getPhoneNumber(), entity.getEmail());
+        return new BootcoinWalletDto(
+                entity.getDocumentType(),
+                entity.getDocumentNumber(),
+                entity.getPhoneNumber(),
+                entity.getEmail(),
+                entity.getAssociatedYankiWalletId(),
+                entity.getAssociatedAccountId()
+        );
     }
+
 }
